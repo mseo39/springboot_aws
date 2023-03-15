@@ -73,8 +73,8 @@ public class PostsApiControllerTest {
         Posts savedPosts = postsRepository.save(Posts.builder()
                 .title("title")
                 .content("content")
-                .author("author")
-                .build());
+                .author("author").build());
+
         Long updateId= savedPosts.getId();
         String expectedTitle = "title2";
         String expectedContent = "content2";

@@ -1,5 +1,6 @@
 package gdsc.hello.post.domain.posts;
 
+import gdsc.hello.post.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,8 @@ import javax.persistence.*;
 //테이블과 링크될 클래스임을 나타냅니다
 //기본값으로 클래스의 카멜케이스 이름을 언더스코어 네이밍으로 이름을 매칭합니다
 //ex) SalesManager.java -> sales_managertable
-public class Posts {
+@Table(name = "posts")
+public class Posts extends BaseTimeEntity {
     @Id //해당테이블의 pk필드를 나타냅니다
     //pk의 생성규칙을 나타냅니다
     //스프링부트 2.0에서는 generationType.IDENTITY옵션을 추가해야만 auto_increment가 됩니다
