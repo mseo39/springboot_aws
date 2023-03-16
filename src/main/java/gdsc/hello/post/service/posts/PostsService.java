@@ -2,12 +2,16 @@ package gdsc.hello.post.service.posts;
 
 import gdsc.hello.post.domain.posts.Posts;
 import gdsc.hello.post.domain.posts.PostsRepository;
+import gdsc.hello.post.web.dto.PostsListResponseDto;
 import gdsc.hello.post.web.dto.PostsResponseDto;
 import gdsc.hello.post.web.dto.PostsSaveRequestDto;
 import gdsc.hello.post.web.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /*
 * 흔히 하는 오해! service에서 비지니스 로직을 처리해야한다 -> x
 * 서비스는 트랜잭션, 도메인 간 순서 보장의 역할만 함
@@ -48,4 +52,20 @@ public class PostsService {
 
         return new PostsResponseDto(entity);
     }
+
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDto> findAllDesc(){
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDto::new)//왼쪽 코드는 실제로 .map(posts -> new PostsListResponseDto)와 같다. 포스트레파지토리로 넘어온 포스트의 stream을 map을 통해 postsListResponseDto 변환 -> List로 반환하는 메소드
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void delete (Long id) {
+        Posts posts = postsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+
+        postsRepository.delete(posts);
+    }
+
+
 }
