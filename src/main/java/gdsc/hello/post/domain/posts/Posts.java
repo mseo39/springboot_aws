@@ -31,19 +31,25 @@ public class Posts extends BaseTimeEntity {
     //테이블의 칼럼을 나타내며 굳이 선언하지 않더라도 해당 클래스의 필드를 모두 칼럼이 됩니다
     //사용하지 이유는, 기본값 외에 추가로 변경이 필요한 옵션이 있으면 사용합니다
     //문자열의 경우 VARCHAR(255)가 기본값인데, 사이즈를 500으로 늘리고 싶거나, 타입을 TEXT로 변경하고 싶거나 등의 경우에 사용됩니다
-    @Column(length = 10, nullable = false)
-    private String title;
+    @Column(length = 10, nullable = false) //제목은 10자
+    private String title; //제목
 
-    @Column(length =100, columnDefinition = "TEXT", nullable = false)
-    private String content;
+    @Column(length =100, columnDefinition = "TEXT", nullable = false) //내용은 100자
+    private String content; //내용
 
-    private String author;
+    private String author; //이름
+
+    private Integer age; //나이
+
+    private String gender; //성별
 
     @Builder //생성자는 어떤 필드에 값을 채우는지 알 수 없음 하지만 빌더는 어느 필드에 어떤 값을 채워야 할지 명확하게 알 수 있음
-    public Posts(String title, String content, String author){
+    public Posts(String title, String content, String author, Integer age, String gender){
         this.title=title;
         this.content=content;
         this.author=author;
+        this.age=age;
+        this.gender=gender;
     }
 
     public void update(String title, String content){

@@ -17,7 +17,9 @@ var main = {
         var data = {
             title: $('#title').val(),
             author: $('#author').val(),
-            content: $('#content').val()
+            content: $('#content').val(),
+            age: $('#age').val(),
+            gender: $("input[type=radio][name=gender]:checked").val()
         };
 
         $.ajax({
@@ -27,7 +29,7 @@ var main = {
             contentType:'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function() {
-            alert('글이 등록되었습니다.');
+            alert('등록 되었습니다.');
             window.location.href = '/';
         }).fail(function (error) {
             alert(JSON.stringify(error));
@@ -40,19 +42,46 @@ var main = {
         };
 
         var id = $('#id').val();
+        
+        
+        //원래 저장되어있던 데이터를 가져옴
+        var origin_data;
 
         $.ajax({
-            type: 'PUT',
-            url: '/api/v1/posts/'+id,
-            dataType: 'json',
-            contentType:'application/json; charset=utf-8',
-            data: JSON.stringify(data)
-        }).done(function() {
-            alert('글이 수정되었습니다.');
-            window.location.href = '/';
+            type: "GET",
+            url:'/api/v1/posts/'+id,
+            dataType: 'json'
+        }).done(function(data) {
+
+            //원본 내용과 같다면 예외를 발생
+            if (data['title']==$('#title').val() && data['content']==$('#content').val()) {
+                alert('제목과 내용이 같습니다.');
+                window.location.href = '/posts/update/'+id;
+            }else{
+                $.ajax({
+                    type: 'PUT',
+                    url: '/api/v1/posts/' + id,
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(data)
+                }).done(function () {
+                    alert('수정 되었습니다.');
+                    window.location.href = '/';
+                }).fail(function (error) {
+                    alert(JSON.stringify(error));
+                });
+            }
+
         }).fail(function (error) {
+
             alert(JSON.stringify(error));
+
         });
+
+        //alert(origin_data + " / " + $('#content').val())
+
+
+
     },
     delete : function () {
         var id = $('#id').val();
@@ -63,7 +92,7 @@ var main = {
             dataType: 'json',
             contentType:'application/json; charset=utf-8'
         }).done(function() {
-            alert('글이 삭제되었습니다.');
+            alert('삭제 되었습니다.');
             window.location.href = '/';
         }).fail(function (error) {
             alert(JSON.stringify(error));
