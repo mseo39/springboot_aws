@@ -39,17 +39,11 @@ public class Posts extends BaseTimeEntity {
 
     private String author; //이름
 
-    private Integer age; //나이
-
-    private String gender; //성별
-
     @Builder //생성자는 어떤 필드에 값을 채우는지 알 수 없음 하지만 빌더는 어느 필드에 어떤 값을 채워야 할지 명확하게 알 수 있음
-    public Posts(String title, String content, String author, Integer age, String gender){
+    public Posts(String title, String content, String author){
         this.title=title;
         this.content=content;
         this.author=author;
-        this.age=age;
-        this.gender=gender;
     }
 
     public void update(String title, String content){

@@ -1,18 +1,20 @@
 package gdsc.hello.post.web;
+import gdsc.hello.post.service.member.MemberService;
 import gdsc.hello.post.service.posts.PostsService;
+import gdsc.hello.post.web.dto.MemberDto;
 import gdsc.hello.post.web.dto.PostsResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
     private final PostsService postsService;
-    @GetMapping("/") //url 매핑
+    @GetMapping("/posts/list") //url 매핑
     public String index(Model model){
         model.addAttribute("posts", postsService.findAllDesc());
         return "index";
@@ -34,6 +36,32 @@ public class IndexController {
         model.addAttribute("post", dto);
 
         return "posts-update";
+    }
+
+    private MemberService memberService;
+
+    @GetMapping("/")
+    public String indexMember(){
+        return "home/index_member";
+    }
+
+    @GetMapping("/member/signup")
+    public String signupForm(Model model){
+        model.addAttribute("member", new MemberDto());
+
+        return "member/signupForm";
+    }
+
+    @PostMapping("/member/signup")
+    public String signup(MemberDto memberDto){
+        memberService.signUp(memberDto);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/member/login")
+    public String login(){
+        return "member/loginForm";
     }
 
 }
